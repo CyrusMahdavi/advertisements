@@ -43,10 +43,38 @@ public class AdvertiserController{
             stmt.executeUpdate("DELETE FROM advertisers WHERE name = \'" + name + "\'");
             return name+ " deleted.";
         }
+        @RequestMapping("/api/get")
+        public String viewAdvertiser(@RequestParam(name = "name")String name) throws Exception{
+            Connection conn = DriverManager.getConnection("jdbc:h2:~/test","sa","");
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM advertisers  WHERE name = \'" + name + "\'");
+            if(!rs.next()){ //only look at contactname if name not found
+                rs = stmt.executeQuery("SELECT * FROM advertisers  WHERE contactname = \'" + name + "\'");
+                rs.next();
+            }
+            String s = "Name: " + rs.getString(1) + " Contact name: " + rs.getString(2) + " Credits: " + rs.getInt(3);
+            conn.close();
+            return s;
 
+        }
 
+        @RequestMapping("/api/update")
+        public String updateAdvertiser(@RequestParam(name = "name")String name,
+                                       @RequestParam(name = "contactName", defaultValue = "")String contactName,
+                                       @RequestParam(name = "creditLimit", defaultValue = "-1")long creditLimit) throws Exception{
+            Connection conn = DriverManager.getConnection("jdbc:h2:~/test","sa","");
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM advertisers WHERE name = \'" + name + "\'");
+            rs.next();
+            String curContact = rs.getString(2);
+            long curCreditLimit  = rs.getInt(3);
+            if(contactName == "") contactName = curContact;
+            if(creditLimit ==-1) creditLimit = curCreditLimit;
+            stmt.executeUpdate("UPDATE advertisers SET contactname = \'" + contactName + "\', creditlimit = " +creditLimit + " WHERE name = \'"+ name + "\'");
+            String s = "Updated from:  Contact Name: " + curContact + " Credit Limit: " + curCreditLimit +
+                    "\nTo:   Contact Name: " + contactName + " Credit Limit: " + creditLimit;
+            conn.close();
+            return s;
+        }
 }
-
-
-
 
