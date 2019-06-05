@@ -1,0 +1,39 @@
+06-05 13:35:49 jdbc[2]: exception
+org.h2.jdbc.JdbcSQLException: Table "ADVERTISER" not found; SQL statement:
+INSERT INTO advertiser(name,contactName,creditLimit) VALUES (hello, hi, 0) [42102-156]
+06-05 13:36:19 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Table "ADVERTISER" not found; SQL statement:
+INSERT INTO advertiser(name,contactName,creditLimit) VALUES (hello, hi, 10) [42102-156]
+06-05 13:37:12 jdbc[2]: exception
+org.h2.jdbc.JdbcSQLException: Table "TEST" not found; SQL statement:
+INSERT INTO test(name,contactName,creditLimit) VALUES (hello, hi, 10) [42102-156]
+06-05 13:38:16 jdbc[2]: exception
+org.h2.jdbc.JdbcSQLException: Table "NAME" not found; SQL statement:
+INSERT INTO name(name,contactName,creditLimit) VALUES (hello, hi, 10) [42102-156]
+06-05 13:39:20 jdbc[2]: exception
+org.h2.jdbc.JdbcSQLException: Table "TEST" not found; SQL statement:
+INSERT INTO test(name,contactName,creditLimit) VALUES (hello, hi, 10) [42102-156]
+06-05 13:39:58 jdbc[2]: exception
+org.h2.jdbc.JdbcSQLException: Table "TEST" not found; SQL statement:
+INSERT INTO test(name) VALUES (hello) [42102-156]
+06-05 13:40:34 jdbc[2]: exception
+org.h2.jdbc.JdbcSQLException: Table "TEST" not found; SQL statement:
+INSERT INTO TEST(name) VALUES (hello) [42102-156]
+06-05 13:40:35 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Table "TEST" not found; SQL statement:
+INSERT INTO TEST(name) VALUES (hello) [42102-156]
+06-05 13:40:35 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLException: Table "TEST" not found; SQL statement:
+INSERT INTO TEST(name) VALUES (hello) [42102-156]
+06-05 13:43:44 jdbc[2]: exception
+org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement "CREATE TABLE ADVERTISERS(NAME VARCHAR(255),CONTACTNAME VARCHAR(255), CREDITLIMIT INT "; expected "(, FOR, UNSIGNED, NOT, NULL, AS, DEFAULT, GENERATED, NOT, NULL, AUTO_INCREMENT, IDENTITY, NULL_TO_DEFAULT, SEQUENCE, SELECTIVITY, COMMENT, CONSTRAINT, PRIMARY, UNIQUE, NOT, NULL, CHECK, REFERENCES, ,, )"; SQL statement:
+CREATE TABLE Advertisers(Name VARCHAR(255),ContactName VARCHAR(255), creditlimit INT [42001-156]
+06-05 13:43:45 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement "CREATE TABLE ADVERTISERS(NAME VARCHAR(255),CONTACTNAME VARCHAR(255), CREDITLIMIT INT "; expected "(, FOR, UNSIGNED, NOT, NULL, AS, DEFAULT, GENERATED, NOT, NULL, AUTO_INCREMENT, IDENTITY, NULL_TO_DEFAULT, SEQUENCE, SELECTIVITY, COMMENT, CONSTRAINT, PRIMARY, UNIQUE, NOT, NULL, CHECK, REFERENCES, ,, )"; SQL statement:
+CREATE TABLE Advertisers(Name VARCHAR(255),ContactName VARCHAR(255), creditlimit INT [42001-156]
+06-05 13:44:09 jdbc[2]: exception
+org.h2.jdbc.JdbcSQLException: Table "ADVERTISERS" already exists; SQL statement:
+CREATE TABLE Advertisers(Name VARCHAR(255),ContactName VARCHAR(255), creditlimit INT) [42101-156]
+06-05 13:44:11 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Table "ADVERTISERS" already exists; SQL statement:
+CREATE TABLE Advertisers(Name VARCHAR(255),ContactName VARCHAR(255), creditlimit INT) [42101-156]

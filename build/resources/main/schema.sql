@@ -1,4 +1,3 @@
-ALTER USER admin SET PASSWORD 'hithere';
 CREATE TABLE advertiser
 (
  id INTEGER NOT NULL,
