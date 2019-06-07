@@ -2,10 +2,13 @@ package ads;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import java.sql.*;
 
-@RestController
+@Controller
 public class AdvertiserController{
 
         @RequestMapping("/api/advertiser") //site to add a new advertiser to the database
@@ -76,5 +79,14 @@ public class AdvertiserController{
             conn.close();
             return s;
         }
+
+
+    @GetMapping("/hi")
+        public String index() {
+            return "why";
+        }
+
+
+
 }
 
