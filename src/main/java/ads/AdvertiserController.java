@@ -11,7 +11,9 @@ import java.sql.*;
 @Controller
 public class AdvertiserController{
 
-        @RequestMapping("/api/advertiser") //site to add a new advertiser to the database
+
+
+        @RequestMapping("/api/advertiser/advertiser") //site to add a new advertiser to the database
         public String getName(@RequestParam(name = "name", defaultValue = "Name") String name,
                               @RequestParam(name = "contactName",defaultValue = "use name") String contactName,
                               @RequestParam(name = "creditLimit", defaultValue = "0") long creditLimit) throws Exception{
@@ -28,7 +30,7 @@ public class AdvertiserController{
             conn.close();
             return s;
         }
-        @RequestMapping("/api/checkcredits") //site to check if advertiser has enough credits
+        @RequestMapping("/api/advertiser/checkcredits") //site to check if advertiser has enough credits
         public String checkCredits(@RequestParam(name = "name")String name) throws Exception{
             boolean enough;
             Connection conn = DriverManager.getConnection("jdbc:h2:~/test", "sa","");
@@ -39,14 +41,14 @@ public class AdvertiserController{
                 else enough = false;
             return enough?"This advertieser has enough credits":"This advertiser does not have enough credits";
         }
-        @RequestMapping("/api/delete")
+        @RequestMapping("/api/advertiser/delete")
         public String delteAdvertiser(@RequestParam(name = "name")String name) throws Exception{
             Connection conn = DriverManager.getConnection("jdbc:h2:~/test","sa","");
             Statement stmt = conn.createStatement();
             stmt.executeUpdate("DELETE FROM advertisers WHERE name = \'" + name + "\'");
             return name+ " deleted.";
         }
-        @RequestMapping("/api/get")
+        @RequestMapping("/api/advertiser/get")
         public String viewAdvertiser(@RequestParam(name = "name")String name) throws Exception{
             Connection conn = DriverManager.getConnection("jdbc:h2:~/test","sa","");
             Statement stmt = conn.createStatement();
@@ -61,7 +63,7 @@ public class AdvertiserController{
 
         }
 
-        @RequestMapping("/api/update")
+        @RequestMapping("/api/advertiser/update")
         public String updateAdvertiser(@RequestParam(name = "name")String name,
                                        @RequestParam(name = "contactName", defaultValue = "")String contactName,
                                        @RequestParam(name = "creditLimit", defaultValue = "-1")long creditLimit) throws Exception{
