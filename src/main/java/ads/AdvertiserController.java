@@ -1,6 +1,7 @@
 package ads;
 
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.stereotype.Controller;
@@ -11,9 +12,9 @@ public class AdvertiserController{
 
 
 
-        @RequestMapping("/api/advertiser/advertiser") //site to add a new advertiser to the database
-        public String getName(@RequestParam(name = "name", defaultValue = "Name") String name,
-                              @RequestParam(name = "contactName",defaultValue = "use name") String contactName,
+        @RequestMapping(path = "/api/advertiser/advertiser", method = RequestMethod.POST) //site to add a new advertiser to the database
+        public String newAdvertiser(@RequestParam(name = "name", defaultValue = "Name") String name,
+                              @RequestParam(name = "contactName",defaultValue = "N/A") String contactName,
                               @RequestParam(name = "creditLimit", defaultValue = "0") long creditLimit) throws Exception{
 
             Connection conn = DriverManager.getConnection("jdbc:h2:~/test", "sa","");
@@ -26,9 +27,9 @@ public class AdvertiserController{
             while(rs.next())
                 s+="  " + rs.getString(1);
             conn.close();
-            return s;
+            return "why";//s;
         }
-        @RequestMapping("/api/advertiser/checkcredits") //site to check if advertiser has enough credits
+        @RequestMapping(path = "/api/advertiser/checkcredits", method = RequestMethod.GET) //site to check if advertiser has enough credits
         public String checkCredits(@RequestParam(name = "name")String name) throws Exception{
             boolean enough;
             Connection conn = DriverManager.getConnection("jdbc:h2:~/test", "sa","");
@@ -37,16 +38,16 @@ public class AdvertiserController{
             rs.next();
             if(rs.getInt(3)>0) enough = true;
                 else enough = false;
-            return enough?"This advertieser has enough credits":"This advertiser does not have enough credits";
+            return "why";//enough?"This advertieser has enough credits":"This advertiser does not have enough credits";
         }
-        @RequestMapping("/api/advertiser/delete")
-        public String delteAdvertiser(@RequestParam(name = "name")String name) throws Exception{
+        @RequestMapping(path = "/api/advertiser/delete", method = RequestMethod.DELETE)
+        public String deleteAdvertiser(@RequestParam(name = "name")String name) throws Exception{
             Connection conn = DriverManager.getConnection("jdbc:h2:~/test","sa","");
             Statement stmt = conn.createStatement();
             stmt.executeUpdate("DELETE FROM advertisers WHERE name = \'" + name + "\'");
-            return name+ " deleted.";
+            return "why";//name+ " deleted.";
         }
-        @RequestMapping("/api/advertiser/get")
+        @RequestMapping(path = "/api/advertiser/get", method = RequestMethod.GET)
         public String viewAdvertiser(@RequestParam(name = "name")String name) throws Exception{
             Connection conn = DriverManager.getConnection("jdbc:h2:~/test","sa","");
             Statement stmt = conn.createStatement();
@@ -57,11 +58,11 @@ public class AdvertiserController{
             }
             String s = "Name: " + rs.getString(1) + " Contact name: " + rs.getString(2) + " Credits: " + rs.getInt(3);
             conn.close();
-            return s;
+            return "why";//s;
 
         }
 
-        @RequestMapping("/api/advertiser/update")
+        @RequestMapping(path = "api/advertiser/update", method = RequestMethod.PUT)
         public String updateAdvertiser(@RequestParam(name = "name")String name,
                                        @RequestParam(name = "contactName", defaultValue = "")String contactName,
                                        @RequestParam(name = "creditLimit", defaultValue = "-1")long creditLimit) throws Exception{
@@ -71,13 +72,14 @@ public class AdvertiserController{
             rs.next();
             String curContact = rs.getString(2);
             long curCreditLimit  = rs.getInt(3);
-            if(contactName == "") contactName = curContact;
+            System.out.println("Contact name to be changed: " + curContact+ "***********************************");
+            if(contactName.equals("")) contactName = curContact;
             if(creditLimit ==-1) creditLimit = curCreditLimit;
             stmt.executeUpdate("UPDATE advertisers SET contactname = \'" + contactName + "\', creditlimit = " +creditLimit + " WHERE name = \'"+ name + "\'");
             String s = "Updated from:  Contact Name: " + curContact + " Credit Limit: " + curCreditLimit +
                     "\nTo:   Contact Name: " + contactName + " Credit Limit: " + creditLimit;
             conn.close();
-            return s;
+            return "why";//s;
         }
 
 
