@@ -40,14 +40,14 @@ public class AdvertiserController{
                 else enough = false;
             return "why";//enough?"This advertieser has enough credits":"This advertiser does not have enough credits";
         }
-        @RequestMapping(path = "/api/advertiser/delete", method = RequestMethod.DELETE)
+        @RequestMapping(path = "/api/advertiser/delete", method = RequestMethod.DELETE) //delete advertiser
         public String deleteAdvertiser(@RequestParam(name = "name")String name) throws Exception{
             Connection conn = DriverManager.getConnection("jdbc:h2:~/test","sa","");
             Statement stmt = conn.createStatement();
             stmt.executeUpdate("DELETE FROM advertisers WHERE name = \'" + name + "\'");
             return "why";//name+ " deleted.";
         }
-        @RequestMapping(path = "/api/advertiser/get", method = RequestMethod.GET)
+        @RequestMapping(path = "/api/advertiser/get", method = RequestMethod.GET) //view advertiser credits, name, and contactName
         public String viewAdvertiser(@RequestParam(name = "name")String name) throws Exception{
             Connection conn = DriverManager.getConnection("jdbc:h2:~/test","sa","");
             Statement stmt = conn.createStatement();
@@ -62,7 +62,7 @@ public class AdvertiserController{
 
         }
 
-        @RequestMapping(path = "api/advertiser/update", method = RequestMethod.PUT)
+        @RequestMapping(path = "api/advertiser/update", method = RequestMethod.PUT) //update advertiser credits and/or contactName
         public String updateAdvertiser(@RequestParam(name = "name")String name,
                                        @RequestParam(name = "contactName", defaultValue = "")String contactName,
                                        @RequestParam(name = "creditLimit", defaultValue = "-1")long creditLimit) throws Exception{

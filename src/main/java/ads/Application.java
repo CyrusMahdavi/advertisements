@@ -5,8 +5,6 @@ Run:
 java -jar build/libs/gs-rest-service-0.1.0.jar
  */
 
-
-
 package ads;
 
 import org.springframework.boot.SpringApplication;
