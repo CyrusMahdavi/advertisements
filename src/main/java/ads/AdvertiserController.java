@@ -1,11 +1,13 @@
 package ads;
 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.context.request.WebRequest;
+import java.util.Date;
+
 import java.sql.*;
 
 @Controller
@@ -28,6 +30,7 @@ public class AdvertiserController{
             while(rs.next())
                 s+="  " + rs.getString(1);
             conn.close();
+            ResponseEntity<Void> jh;
             return "why";//s;
         }
         @RequestMapping(path = "/api/advertiser/checkcredits", method = RequestMethod.GET) //site to check if advertiser has enough credits
@@ -51,28 +54,36 @@ public class AdvertiserController{
             return "why";//name+ " deleted.";
         }
         @RequestMapping(path = "/api/advertiser/get", method = RequestMethod.GET) //view advertiser credits, name, and contactName
-        public String viewAdvertiser(@RequestParam(name = "name")String name) throws Exception{
+        public ResponseEntity viewAdvertiser(@RequestParam(name = "name")String name) throws Exception{
             Connection conn = DriverManager.getConnection("jdbc:h2:~/test","sa","");
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT * FROM advertisers  WHERE name = \'" + name + "\'");
             if(!rs.next()){ //only look at contactname if name not found
                 rs = stmt.executeQuery("SELECT * FROM advertisers  WHERE contactname = \'" + name + "\'");
-                rs.next();
+                if(!rs.next()){
+                    ResponseEntity<String> error = new ResponseEntity("hello",HttpStatus.INTERNAL_SERVER_ERROR);
+                    return error;
+                }
             }
             String s = "Name: " + rs.getString(1) + " Contact name: " + rs.getString(2) + " Credits: " + rs.getInt(3);
-            conn.close();
-            return "why";//s;
+            ResponseEntity<String> set = new ResponseEntity<String>(s, HttpStatus.OK);
 
+            return set;//s;
         }
 
         @RequestMapping(path = "api/advertiser/update", method = RequestMethod.PUT) //update advertiser credits and/or contactName
-        public String updateAdvertiser(@RequestParam(name = "name")String name,
+        public ResponseEntity updateAdvertiser(@RequestParam(name = "name")String name,
                                        @RequestParam(name = "contactName", defaultValue = "")String contactName,
                                        @RequestParam(name = "creditLimit", defaultValue = "-1")long creditLimit) throws Exception{
             Connection conn = DriverManager.getConnection("jdbc:h2:~/test","sa","");
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT * FROM advertisers WHERE name = \'" + name + "\'");
-            rs.next();
+            if(!rs.next()){
+                ResponseEntity<String> error = new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+                return error;
+            }
+
+
             String curContact = rs.getString(2);
             long curCreditLimit  = rs.getInt(3);
             System.out.println("Contact name to be changed: " + curContact+ "***********************************");
@@ -82,7 +93,7 @@ public class AdvertiserController{
             String s = "Updated from:  Contact Name: " + curContact + " Credit Limit: " + curCreditLimit +
                     "\nTo:   Contact Name: " + contactName + " Credit Limit: " + creditLimit;
             conn.close();
-            return "why";//s;
+            return new ResponseEntity(HttpStatus.OK);//s;
         }
 
 
