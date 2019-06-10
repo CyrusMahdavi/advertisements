@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import java.sql.*;
 
 @Controller
@@ -30,14 +31,16 @@ public class AdvertiserController{
             return "why";//s;
         }
         @RequestMapping(path = "/api/advertiser/checkcredits", method = RequestMethod.GET) //site to check if advertiser has enough credits
-        public String checkCredits(@RequestParam(name = "name")String name) throws Exception{
+        public String checkCredits(@RequestParam(name = "name")String name,
+                                   @RequestParam(name = "creditsNeeded")long creditsNeeded, Model model) throws Exception{
             boolean enough;
             Connection conn = DriverManager.getConnection("jdbc:h2:~/test", "sa","");
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT * FROM advertisers WHERE name = \'" + name + "\'");
             rs.next();
-            if(rs.getInt(3)>0) enough = true;
+            if(rs.getInt(3)>creditsNeeded) enough = true;
                 else enough = false;
+                model.addAttribute("result", enough?"Success":"Failure");
             return "why";//enough?"This advertieser has enough credits":"This advertiser does not have enough credits";
         }
         @RequestMapping(path = "/api/advertiser/delete", method = RequestMethod.DELETE) //delete advertiser
